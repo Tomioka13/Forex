@@ -68,11 +68,11 @@ void OnChartEvent(const int id,
 //+------------------------------------------------------------------+
 //| Chartist Analyser function                                              |
 //+------------------------------------------------------------------+
-int getCandleType(double candlePlace)
+int getCandleType(int candlePlace)
 {
-//---Returns 1 if the selected candle is Bullish, -1 if the candle is Bearish, 0 if the candle is neither of them
-double op,cl;
+//---
 int ret;
+double op,cl;
 op=Open[candlePlace];
 cl=Close[candlePlace];
 if (op<cl)
@@ -83,7 +83,4 @@ else
 { ret = -1 ; }
 return ret;
 }
-
-
-
 //+------------------------------------------------------------------+
