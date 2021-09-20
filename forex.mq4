@@ -71,16 +71,73 @@ void OnChartEvent(const int id,
 int getCandleType(int candlePlace)
 {
 //---
-int ret;
-double op,cl;
-op=Open[candlePlace];
-cl=Close[candlePlace];
+int ret ;
+double op,cl ;
+op = Open[candlePlace] ;
+cl = Close[candlePlace] ;
 if (op<cl)
 { ret = 1 ; }
-else if (op==cl)
+else if (op == cl)
 { ret = 0 ; }
 else
 { ret = -1 ; }
+return ret;
+}
+
+int getCandleLength(int candlePlace)
+{
+//---
+double op,cl,ret ;
+op = Open[candlePlace] ;
+cl = Close[candlePlace] ;
+if (op < cl){ ret = cl-op ; }
+else { ret = op-cl ; }
+return ret ;
+}
+bool isBullishUnderneckLine(int candlePlace,double lengthDiff)
+{
+//---
+bool ret = false ;
+double cl1,cl2 ;
+int candleBefore = candlePlace++ ;
+cl1 = Close[candleBefore];
+cl2=Close[candlePlace];
+if ((getCandleType(candlePlace) == getCandleType(candleBefore))||(getCandleType(candlePlace) != -1)||(cl1 >= cl2)) {}
+else { if (getCandleLength(candleBefore) - getCandleLength(candlePlace) >= lengthDiff) { ret == true ; } }
+return ret ;
+}
+bool isBearishUnderneckLine(int candlePlace,double lengthDiff)
+{
+//---
+bool ret = false ;
+double cl1,cl2 ;
+int candleBefore = candlePlace++ ;
+cl1 = Close[candleBefore];
+cl2 = Close[candlePlace];
+if ((getCandleType(candlePlace) == getCandleType(candleBefore))||(getCandleType(candlePlace) != 1)||(cl1 <= cl2)) {}
+else { if (getCandleLength(candleBefore) - getCandleLength(candlePlace) >= lengthDiff) { ret == true ; } }
+return ret ;
+}
+bool isBullishGap(int candlePlace)
+{
+//---
+bool ret = false ;
+double cl,low ;
+int candleBefore = candlePlace++ ;
+cl = Close[candleBefore] ;
+low = Low[candlePlace] ;
+if (( cl < low )&&( getCandleType(candlePlace) == 1 )&&(getCandleType(candleBefore == 1 ))) { ret = true ; }
+return ret;
+}
+bool isBearishGap(int candlePlace)
+{
+//---
+bool ret = false ;
+double cl,high ;
+int candleBefore = candlePlace++ ;
+cl = Close[candleBefore] ;
+high = High[candlePlace] ;
+if (( cl > high )&&( getCandleType(candlePlace) == -1 )&&( getCandleType(candleBefore == -1 ))) { ret = true ; }
 return ret;
 }
 //+------------------------------------------------------------------+
