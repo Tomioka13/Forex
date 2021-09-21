@@ -188,7 +188,7 @@ bool verify(int candle,double percentage,double marginPercentage){
 
 bool isPressure(int candle)
 {
-   return verify(candle,80,20);
+   return verify(candle,80,10);
 }
 
 bool isHammer(int candle)
@@ -206,6 +206,31 @@ bool isMarobozu(int candle)
    return verify(candle,100,0);
 }
 
+bool isWaterDoji(int candle)
+{
+   return verify(candle,2,50);
+}
+
+bool isDragonDoji(int candle)
+{
+   return verify(candle,2,0);
+}
+
+bool isTombDoji(int candle)
+{
+   return verify(candle,2,100);
+}
+
+bool isRCrossDoji(int candle)
+{
+   return verify(candle,2,75);
+}
+
+bool isCrossDoji(int candle)
+{
+   return verify(candle,2,75);
+}
+
 bool isApproximative(double v1,double v2,double margin)
 {
    bool ret=false;
@@ -215,6 +240,109 @@ bool isApproximative(double v1,double v2,double margin)
    }
    return ret;
 }
+
+bool isSwallowed(int ind)
+{
+   bool ret =false;
+   double full=getCandleLength(ind);
+   double percentage=(50*full)/100;
+   if(percentage>=getCandleLength(ind+1))
+   {
+   ret=true;
+   }
+   return ret;
+}
+
+bool isHarami(int ind)
+{
+   bool ret =false;
+   double full=getCandleLength(ind+1);
+   double percentage=(50*full)/100;
+   if(percentage>=getCandleLength(ind))
+   {
+   ret=true;
+   }
+   return ret;
+}
+
+bool isSoldier(int candlestart)
+{
+   if(getCandleType(candlestart)!=1)
+   {
+    return false;  
+   }
+   bool ret = false;
+   int current,next1,next2;
+   current=candlestart;
+   next1=candlestart+1;
+   next2=candlestart+2;
+   if(isApproximative(Open[current],Close[next1],0.250)&& isApproximative(Open[next1],Close[next2],0.250))
+   {
+      ret=true;
+   }return ret;
+}
+
+
+bool isCrow(int candlestart)
+{
+   if(getCandleType(candlestart)!=-1)
+   {
+    return false;  
+   }
+   bool ret = false;
+   int current,next1,next2;
+   current=candlestart;
+   next1=candlestart+1;
+   next2=candlestart+2;
+   if(isApproximative(Close[current],Open[next1],0.250)&& isApproximative(Close[next1],Open[next2],0.250))
+   {
+      ret=true;
+   }return ret;
+}
+ 
+bool isMorningStar(int ind)
+{
+   if(getCandleType(ind)!=1)
+   {return false;}
+   bool ret=false;
+   int next1=ind+1,next2=ind+2;
+   double absolute;
+   if(getCandleType(next1)==1)
+   {
+      absolute=Close[next1];
+   }
+   else
+   {
+   absolute=Open[next1];
+   } 
+   if(isApproximative(Open[ind],absolute,0.250) && isApproximative(absolute,Close[next2],0.250))
+   {
+      ret =true;
+   }
+   return ret;
+} 
+
+bool isNightStar(int ind)
+{
+   if(getCandleType(ind)!=1)
+   {return false;}
+   bool ret=false;
+   int next1=ind+1,next2=ind+2;
+   double absolute;
+   if(getCandleType(next1)==-1)
+   {
+      absolute=Close[next1];
+   }
+   else
+   {
+      absolute=Open[next1];
+   } 
+   if(isApproximative(Open[ind],absolute,0.250) && isApproximative(absolute,Close[next2],0.250))
+   {
+      ret =true;
+   }
+   return ret;
+} 
 
 bool wouldGoDown(int candle)//farany
 {
