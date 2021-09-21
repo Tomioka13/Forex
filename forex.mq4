@@ -206,9 +206,19 @@ bool isMarobozu(int candle)
    return verify(candle,100,0);
 }
 
-bool wouldGoDown(int candle)
+bool isApproximative(double v1,double v2,double margin)
 {
-   
+   bool ret=false;
+   if((v1>=v2-margin)&&(v2+margin>=v1))
+   {
+      ret=true;
+   }
+   return ret;
+}
+
+bool wouldGoDown(int candle)//farany
+{
+   return true;
 }
 
 
