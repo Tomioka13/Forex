@@ -65,6 +65,11 @@ void OnChartEvent(const int id,
 //---
    
   }
+  void OnStart()
+  {
+  Alert("getlength is"+getCandleLength(1));
+  Alert("volume"+Volume[1]);
+  }
 //+------------------------------------------------------------------+
 //| Chartist Analyser function                                              |
 //+------------------------------------------------------------------+
@@ -140,4 +145,71 @@ high = High[candlePlace] ;
 if (( cl > high )&&( getCandleType(candlePlace) == -1 )&&( getCandleType(candleBefore == -1 ))) { ret = true ; }
 return ret;
 }
+
+double getPercentage(int candle)
+{
+double full=High[candle]-Low[candle];
+return (getCandleLength(candle)*100)/full;
+}
+
+
+double getValue(int candle,double percentage)
+{
+double full=High[candle]-Low[candle];
+return (percentage*full)/100;
+}
+
+bool isInMargin(int candle,double marginPercentage)
+{
+   bool ret=false;
+   double diffLength,margin,errorMargin;
+   margin=getValue(candle,marginPercentage);
+   errorMargin=getValue(candle,5);
+   if(getCandleType(candle)==1)
+   {
+      diffLength=High[candle]-Close[candle];
+   }
+   else
+   {
+   diffLength=High[candle]-Open[candle];
+   }
+   if((margin+errorMargin>=diffLength)&&(diffLength>=margin-errorMargin)){ret=true;}
+   return ret;
+}
+
+bool verify(int candle,double percentage,double marginPercentage){
+   bool ret=false;
+   if((getPercentage(candle)>=percentage-5)&&(percentage+5>=getPercentage(candle))&&(isInMargin(candle,marginPercentage)))
+   {
+    ret=true;
+   }
+   return ret;
+}
+
+bool isPressure(int candle)
+{
+   return verify(candle,80,20);
+}
+
+bool isHammer(int candle)
+{
+   return verify(candle,25,0);
+}
+
+bool isReverseHammer(int candle)
+{
+   return verify(candle,25,75);
+}
+
+bool isMarobozu(int candle)
+{
+   return verify(candle,100,0);
+}
+
+bool wouldGoDown(int candle)
+{
+   
+}
+
+
 //+------------------------------------------------------------------+
