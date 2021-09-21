@@ -348,6 +348,7 @@ bool wouldGoDown(int candle)//farany
 {
    return true;
 }
+//commentaire
 
 
 //+------------------------------------------------------------------+
